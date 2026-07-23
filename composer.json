@@ -4,7 +4,7 @@
     "type": "project",
     "license": "MIT",
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "codeigniter4/framework": "^4.5",
         "guzzlehttp/guzzle": "^7.9",
         "intervention/image": "^3.9"

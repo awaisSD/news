@@ -18,4 +18,10 @@ class Paths
     public string $testsDirectory = __DIR__ . '/../../tests';
 
     public string $viewDirectory = __DIR__ . '/../Views';
+
+    /**
+     * Directory where the .env file is located — read by Boot.php during
+     * bootstrap to load environment variables before any Config class runs.
+     */
+    public string $envDirectory = __DIR__ . '/../../';
 }
