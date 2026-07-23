@@ -7,6 +7,17 @@
  */
 defined('APP_NAMESPACE') || define('APP_NAMESPACE', 'App');
 
+/*
+ | --------------------------------------------------------------------------
+ | Composer Path
+ | --------------------------------------------------------------------------
+ |
+ | The path that Composer's autoload file is expected to live. Boot.php
+ | reads this directly (Boot::checkMissingExtensions() etc.) — without it
+ | being defined, bootstrap fails before the framework can even start.
+ */
+defined('COMPOSER_PATH') || define('COMPOSER_PATH', ROOTPATH . 'vendor/autoload.php');
+
 date_default_timezone_set('UTC');
 
 /*
