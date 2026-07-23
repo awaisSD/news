@@ -17,13 +17,13 @@ class Modules extends BaseModules
      * $aliases below. If false, no auto-discovery will happen at all,
      * giving a slight performance boost.
      */
-    public bool $enabled = true;
+    public $enabled = true;
 
     /**
      * If true, then auto-discovery will happen across all namespaces loaded
      * by Composer, as well as the namespaces configured locally.
      */
-    public bool $discoverInComposer = true;
+    public $discoverInComposer = true;
 
     /**
      * The Composer package list for Auto-Discovery. Left empty — none of
@@ -33,7 +33,7 @@ class Modules extends BaseModules
      *
      * @var array{only?: list<string>, exclude?: list<string>}
      */
-    public array $composerPackages = [];
+    public $composerPackages = [];
 
     /**
      * Aliases list of all discovery classes that will be active and used
@@ -41,7 +41,7 @@ class Modules extends BaseModules
      *
      * @var list<string>
      */
-    public array $aliases = [
+    public $aliases = [
         'events',
         'filters',
         'registrars',
