@@ -1,5 +1,7 @@
 <?php
 
+namespace Config;
+
 /**
  * The path constants used by the framework's bootstrap process.
  * Adjust systemDirectory / vendorDirectory if you relocate vendor/ or system/
