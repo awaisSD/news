@@ -10,7 +10,6 @@
         "intervention/image": "^3.9"
     },
     "require-dev": {
-        "codeigniter4/devkit": "^1.2",
         "phpunit/phpunit": "^10.5"
     },
     "autoload": {
