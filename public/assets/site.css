@@ -1,0 +1,350 @@
+/*
+ * Front-end site stylesheet — plain, dependency-free CSS (no build step,
+ * no framework). Functional first-version styling: semantic, readable,
+ * mobile-first, and responsive via flexbox/grid only.
+ */
+
+:root {
+  color-scheme: light dark;
+  --max-width: 1080px;
+  --gap: 1.25rem;
+  --border-color: #ddd;
+  --muted: #666;
+  --link: #0b5fa5;
+  --bg: #fff;
+  --fg: #1a1a1a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --border-color: #333;
+    --muted: #aaa;
+    --link: #6cb2f2;
+    --bg: #121212;
+    --fg: #eee;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.55;
+  color: var(--fg);
+  background: var(--bg);
+}
+
+a {
+  color: var(--link);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.sr-only,
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- Header ---- */
+.site-header {
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.75rem 1rem;
+}
+
+.site-header__bar {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.site-header__brand {
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: inherit;
+}
+
+.site-header__search {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.site-header__search input[type="search"] {
+  padding: 0.35rem 0.5rem;
+}
+
+.site-nav {
+  max-width: var(--max-width);
+  margin: 0.5rem auto 0;
+}
+
+.site-nav__list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+}
+
+.site-nav__item {
+  position: relative;
+}
+
+.site-nav__item > a {
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.site-nav__sublist {
+  list-style: none;
+  margin: 0.25rem 0 0 0.75rem;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+
+/* ---- Layout ---- */
+.site-main {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1.25rem 1rem 3rem;
+}
+
+.site-footer {
+  border-top: 1px solid var(--border-color);
+  padding: 1.5rem 1rem;
+  margin-top: 2rem;
+}
+
+.site-footer__links {
+  max-width: var(--max-width);
+  margin: 0 auto 1rem;
+}
+
+.site-footer__links ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+}
+
+.site-footer__copyright {
+  max-width: var(--max-width);
+  margin: 1rem auto 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.ad-slot {
+  max-width: var(--max-width);
+  margin: 1rem auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(128, 128, 128, 0.08);
+  border: 1px dashed var(--border-color);
+}
+
+/* ---- Card grid (home / category / author / search) ---- */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--gap);
+  margin: 1.5rem 0;
+}
+
+.card {
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.card__media img {
+  width: 100%;
+  aspect-ratio: auto;
+}
+
+.card__title,
+.hero__title {
+  margin: 0.6rem 0.75rem 0.25rem;
+  font-size: 1.05rem;
+}
+
+.card__title a,
+.hero__title a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card__excerpt,
+.hero__excerpt {
+  margin: 0 0.75rem 0.5rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.card__date {
+  margin: 0 0.75rem 0.75rem;
+  display: block;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* ---- Hero ---- */
+.hero {
+  margin-bottom: 1.5rem;
+}
+
+.hero__title {
+  font-size: 1.8rem;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.hero__excerpt {
+  margin-left: 0;
+  margin-right: 0;
+  font-size: 1.05rem;
+}
+
+/* ---- Pagination ---- */
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.pagination__status {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* ---- Article ---- */
+.article__eyebrow {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  font-weight: 700;
+}
+
+.article__eyebrow a {
+  text-decoration: none;
+}
+
+.article__headline {
+  font-size: 2rem;
+  margin-bottom: 0.25rem;
+}
+
+.article__subheadline {
+  font-size: 1.2rem;
+  color: var(--muted);
+  margin-top: 0;
+}
+
+.article__byline {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.article__figure {
+  margin: 1.25rem 0;
+}
+
+.article__figure figcaption {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-top: 0.35rem;
+}
+
+.article__figure-credit {
+  margin-left: 0.5rem;
+  font-style: italic;
+}
+
+.article__body {
+  font-size: 1.08rem;
+  max-width: 72ch;
+}
+
+.article__body img {
+  margin: 1rem 0;
+}
+
+.article__author-box {
+  margin-top: 2.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.corrections-box {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  border-left: 4px solid #b45309;
+  background: rgba(180, 83, 9, 0.08);
+}
+
+.corrections-box__title {
+  margin-top: 0;
+  font-size: 1rem;
+}
+
+.corrections-box__list {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+/* ---- Author bio ---- */
+.author-bio__social a {
+  margin-right: 0.75rem;
+}
+
+/* ---- Search ---- */
+.search-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.search-form input[type="search"] {
+  flex: 1;
+  padding: 0.4rem 0.6rem;
+}
+
+/* ---- Static / category description ---- */
+.static-page__body {
+  max-width: 72ch;
+}
+
+.category-description {
+  color: var(--muted);
+  margin-top: -0.5rem;
+}

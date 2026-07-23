@@ -1,0 +1,8 @@
+<?php
+
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+
+defined('CI_DEBUG') || define('CI_DEBUG', 1);
+
+define('ENVIRONMENT', 'testing');

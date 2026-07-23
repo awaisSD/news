@@ -1,0 +1,33 @@
+/vendor/
+/builds/
+/tests/coverage/
+/tests/coverage.xml
+
+env
+.env
+
+# ---------------------------
+# Composer
+# ---------------------------
+composer.lock
+
+# ---------------------------
+# CodeIgniter 4 writable dir
+# ---------------------------
+/writable/cache/*
+!/writable/cache/index.html
+/writable/logs/*
+!/writable/logs/index.html
+/writable/session/*
+!/writable/session/index.html
+/writable/uploads/*
+!/writable/uploads/index.html
+!/writable/uploads/.gitkeep
+
+# ---------------------------
+# OS / editor cruft
+# ---------------------------
+.DS_Store
+.idea/
+.vscode/
+*.swp

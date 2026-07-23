@@ -1,0 +1,44 @@
+{
+    "name": "techacts/news-web",
+    "description": "AI-assisted news publication built on CodeIgniter 4, designed for Google News/Search/Discover eligibility with mandatory human editorial review of all AI-assisted content.",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": "^8.1",
+        "codeigniter4/framework": "^4.5",
+        "guzzlehttp/guzzle": "^7.9",
+        "intervention/image": "^3.9"
+    },
+    "require-dev": {
+        "codeigniter4/devkit": "^1.2",
+        "phpunit/phpunit": "^10.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        },
+        "exclude-from-classmap": [
+            "**/Database/Migrations/**"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/installers": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "scripts": {
+        "post-update-cmd": [
+            "CodeIgniter\\Config\\Publisher::publishAll"
+        ]
+    }
+}
