@@ -25,17 +25,20 @@ php spark db:seed DatabaseSeeder
 Point your Apache vhost's document root at `public/`. Everything outside
 `public/` (app/, vendor/, writable/) should not be web-accessible.
 
-Create your first admin user directly in MySQL (no seeded user exists, since
-seeding a default password would be a real security smell):
-
-```sql
-INSERT INTO users (uuid, name, email, password_hash, role, is_active, created_at, updated_at)
-VALUES (UUID(), 'Admin', 'you@example.com', '<paste output of password_hash() below>', 'admin', 1, NOW(), NOW());
-```
+Create your first admin user with the dedicated seeder (deliberately not part
+of `DatabaseSeeder` — a hardcoded default admin account is exactly the kind
+of credential that gets left in place on real deployments):
 
 ```bash
-php -r "echo password_hash('your-password-here', PASSWORD_DEFAULT), \"\n\";"
+php spark db:seed AdminUserSeeder
 ```
+
+It prompts for an email and name, then either uses a password you supply via
+`ADMIN_PASSWORD=... php spark db:seed AdminUserSeeder` or generates a strong
+random one and prints it once — copy it immediately, it's never stored or
+logged anywhere except as the bcrypt hash in the database. Re-running it is
+safe: it checks for an existing user by email first and won't create a
+duplicate.
 
 Then log in at `/admin/login`.
 
