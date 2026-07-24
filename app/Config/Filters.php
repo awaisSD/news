@@ -9,11 +9,20 @@ use CodeIgniter\Filters\DebugToolbar;
 use CodeIgniter\Filters\ForceHTTPS;
 use CodeIgniter\Filters\Honeypot;
 use CodeIgniter\Filters\InvalidChars;
+use CodeIgniter\Filters\PageCache;
+use CodeIgniter\Filters\PerformanceMetrics;
 use CodeIgniter\Filters\SecureHeaders;
 
 class Filters extends BaseFilters
 {
     /**
+     * NOTE: 'pagecache' and 'performance' MUST be present here even though
+     * neither is added to our own $globals/$filters below — the parent
+     * Filters class's $required array (which we don't override, so its
+     * default applies) references both aliases unconditionally on every
+     * request. Omitting them throws on the first request/command that
+     * initializes the filter chain, not just on cache-related code paths.
+     *
      * @var array<string, class-string|list<class-string>>
      */
     public array $aliases = [
@@ -24,6 +33,8 @@ class Filters extends BaseFilters
         'secureheaders' => SecureHeaders::class,
         'forcehttps'    => ForceHTTPS::class,
         'cors'          => Cors::class,
+        'pagecache'     => PageCache::class,
+        'performance'   => PerformanceMetrics::class,
 
         // App-specific filters — classes authored in app/Filters/*.
         'adminauth'     => \App\Filters\AdminAuthFilter::class,

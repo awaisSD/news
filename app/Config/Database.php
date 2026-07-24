@@ -16,7 +16,21 @@ use CodeIgniter\Database\Config;
  */
 class Database extends Config
 {
+    /**
+     * The directory that holds the Migrations and Seeds directories.
+     * Read directly by the migration runner — omitting this throws
+     * "Undefined property Config\Database::$filesPath" the moment
+     * `php spark migrate` looks for migration files.
+     */
+    public string $filesPath = APPPATH . 'Database' . DIRECTORY_SEPARATOR;
+
     public string $defaultGroup = 'default';
+
+    private const DATE_FORMAT = [
+        'date'     => 'Y-m-d',
+        'datetime' => 'Y-m-d H:i:s',
+        'time'     => 'H:i:s',
+    ];
 
     public array $default = [
         'DSN'          => '',
@@ -37,6 +51,8 @@ class Database extends Config
         'failover'     => [],
         'port'         => 3306,
         'numberNative' => false,
+        'foundRows'    => false,
+        'dateFormat'   => self::DATE_FORMAT,
     ];
 
     public array $readonly = [
@@ -58,6 +74,8 @@ class Database extends Config
         'failover'     => [],
         'port'         => 3306,
         'numberNative' => false,
+        'foundRows'    => false,
+        'dateFormat'   => self::DATE_FORMAT,
     ];
 
     public array $tests = [
@@ -79,6 +97,8 @@ class Database extends Config
         'failover'    => [],
         'foreignKeys' => true,
         'busyTimeout' => 1000,
+        'synchronous' => null,
+        'dateFormat'  => self::DATE_FORMAT,
     ];
 
     public function __construct()
@@ -92,5 +112,10 @@ class Database extends Config
         $this->default['password'] = env('database.default.password', $this->default['password']);
         $this->default['DBDriver'] = env('database.default.DBDriver', $this->default['DBDriver']);
         $this->default['port']     = (int) env('database.default.port', $this->default['port']);
+
+        // Never let an automated test run touch the real database.
+        if (ENVIRONMENT === 'testing') {
+            $this->defaultGroup = 'tests';
+        }
     }
 }

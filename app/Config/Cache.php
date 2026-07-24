@@ -2,7 +2,13 @@
 
 namespace Config;
 
-use CodeIgniter\Cache\CacheFactory;
+use CodeIgniter\Cache\Handlers\ApcuHandler;
+use CodeIgniter\Cache\Handlers\DummyHandler;
+use CodeIgniter\Cache\Handlers\FileHandler;
+use CodeIgniter\Cache\Handlers\MemcachedHandler;
+use CodeIgniter\Cache\Handlers\PredisHandler;
+use CodeIgniter\Cache\Handlers\RedisHandler;
+use CodeIgniter\Cache\Handlers\WincacheHandler;
 use CodeIgniter\Config\BaseConfig;
 
 /**
@@ -21,25 +27,19 @@ class Cache extends BaseConfig
 
     public string $backupHandler = 'dummy';
 
-    public string $storePath = WRITEPATH . 'cache/';
-
     public string $prefix = 'newsweb_';
 
     public int $ttl = 60;
 
-    public bool $reserveCharacters = false;
+    /**
+     * Required for PSR-6 compliance — do not remove even though this app
+     * doesn't set custom cache tags today.
+     */
+    public string $reservedCharacters = '{}()/\@:';
 
     public array $file = [
         'storePath' => WRITEPATH . 'cache/',
         'mode'      => 0640,
-    ];
-
-    public array $redis = [
-        'host'     => '127.0.0.1',
-        'password' => null,
-        'port'     => 6379,
-        'timeout'  => 0,
-        'database' => 0,
     ];
 
     public array $memcached = [
@@ -48,6 +48,43 @@ class Cache extends BaseConfig
         'weight' => 1,
         'raw'    => false,
     ];
+
+    public array $redis = [
+        'host'       => '127.0.0.1',
+        'password'   => null,
+        'port'       => 6379,
+        'timeout'    => 0,
+        'async'      => false,
+        'persistent' => false,
+        'database'   => 0,
+    ];
+
+    /**
+     * Read by CacheFactory::getHandler() — omitting this entirely (as an
+     * earlier version of this file did) throws "Undefined property
+     * Config\Cache::$validHandlers" the moment any cache() call runs.
+     *
+     * @var array<string, class-string<\CodeIgniter\Cache\CacheInterface>>
+     */
+    public array $validHandlers = [
+        'apcu'      => ApcuHandler::class,
+        'dummy'     => DummyHandler::class,
+        'file'      => FileHandler::class,
+        'memcached' => MemcachedHandler::class,
+        'predis'    => PredisHandler::class,
+        'redis'     => RedisHandler::class,
+        'wincache'  => WincacheHandler::class,
+    ];
+
+    /**
+     * @var bool|list<string>
+     */
+    public $cacheQueryString = false;
+
+    /**
+     * @var list<int>
+     */
+    public array $cacheStatusCodes = [];
 
     /**
      * TTLs (seconds) for specific cached artifacts — referenced by name
@@ -69,7 +106,7 @@ class Cache extends BaseConfig
     {
         parent::__construct();
 
-        $this->handler = env('cache.handler', $this->handler);
+        $this->handler       = env('cache.handler', $this->handler);
         $this->redis['host'] = env('redis.host', $this->redis['host']);
         $this->redis['port'] = (int) env('redis.port', $this->redis['port']);
     }
