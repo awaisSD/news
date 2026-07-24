@@ -7,7 +7,10 @@
 <?php if ($isNew): ?>
     <?= form_open('admin/topics') ?>
 <?php else: ?>
-    <?= form_open('admin/topics/' . $topic->id, ['method' => 'put']) ?>
+    <?php // 'put' isn't a valid HTML form method; form_open() prints it verbatim and
+    // browsers silently fall back to GET, which never reaches update(). Routes use
+    // 'websafe' => true, so update() is already registered as plain POST. ?>
+    <?= form_open('admin/topics/' . $topic->id, ['method' => 'post']) ?>
 <?php endif ?>
     <?= csrf_field() ?>
 

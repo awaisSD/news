@@ -4,7 +4,11 @@
 <?= $this->section('content') ?>
 
 <div class="card" style="max-width:800px;">
-    <?= form_open($isNew ? 'admin/pages' : 'admin/pages/' . $page->id, ['method' => $isNew ? 'post' : 'put']) ?>
+    <?php // 'put' isn't a valid HTML form method; form_open() prints it verbatim and
+    // browsers silently fall back to GET, which never reaches update() — this was
+    // the actual cause of edits (e.g. the published checkbox) silently not saving.
+    // Routes use 'websafe' => true, so update() is already registered as plain POST. ?>
+    <?= form_open($isNew ? 'admin/pages' : 'admin/pages/' . $page->id, ['method' => 'post']) ?>
         <?= csrf_field() ?>
 
         <div class="form-group">

@@ -83,7 +83,11 @@ class PageController extends BaseController
             'updated_by'        => $this->currentUser()->id,
         ];
 
-        model(PageModel::class)->update((int) $id, $data);
+        $pageModel = model(PageModel::class);
+
+        if (! $pageModel->update((int) $id, $data)) {
+            return redirect()->back()->withInput()->with('error', implode(' ', $pageModel->errors() ?: ['Update failed for an unknown reason.']));
+        }
 
         model(AuditLogModel::class)->record(
             $this->currentUser()->id, 'updated', 'page', (int) $id, $before,

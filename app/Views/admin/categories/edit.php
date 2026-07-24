@@ -4,7 +4,11 @@
 <?= $this->section('content') ?>
 
 <div class="card" style="max-width:600px;">
-    <?= form_open($isNew ? 'admin/categories' : 'admin/categories/' . $category->id, ['method' => $isNew ? 'post' : 'put']) ?>
+    <?php // 'put' is not a valid HTML form method — form_open() prints it verbatim
+    // rather than translating it, so browsers silently fall back to GET,
+    // which never reaches update() at all. Our routes are registered with
+    // 'websafe' => true, meaning update() is already just plain POST. ?>
+    <?= form_open($isNew ? 'admin/categories' : 'admin/categories/' . $category->id, ['method' => 'post']) ?>
         <?= csrf_field() ?>
 
         <div class="form-group">
