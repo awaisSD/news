@@ -13,6 +13,17 @@ class App extends BaseConfig
      */
     public string $baseURL = '';
 
+    /**
+     * Read unconditionally by SiteURIFactory::getValidHost() when
+     * validating the incoming request's Host header against $baseURL —
+     * omitting this entirely (rather than just leaving it empty) throws.
+     * Add extra accepted hostnames here only if this site is legitimately
+     * reachable under more than one domain.
+     *
+     * @var list<string>
+     */
+    public array $allowedHostnames = [];
+
     public string $indexPage = '';
 
     public string $uriProtocol = 'REQUEST_URI';
