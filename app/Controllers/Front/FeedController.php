@@ -7,7 +7,7 @@ use App\Models\ArticleModel;
 use App\Models\CategoryModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use Config\Cache as CacheConfig;
-use Config\Publisher;
+use Config\SiteIdentity;
 
 class FeedController extends BaseController
 {
@@ -65,8 +65,8 @@ class FeedController extends BaseController
             ->limit(self::LIMIT)
             ->find();
 
-        /** @var Publisher $publisher */
-        $publisher = config(Publisher::class);
+        /** @var SiteIdentity $publisher */
+        $publisher = config(SiteIdentity::class);
 
         return view('front/feeds/rss', [
             'articles'     => $articles,

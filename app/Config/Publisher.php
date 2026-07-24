@@ -2,57 +2,27 @@
 
 namespace Config;
 
-use CodeIgniter\Config\BaseConfig;
+use CodeIgniter\Config\Publisher as BasePublisher;
 
 /**
- * Single source of truth for site/publisher identity.
+ * Publisher Configuration
  *
- * Every place that emits Organization/NewsArticle JSON-LD (Libraries\Seo\JsonLdBuilder),
- * the site header/footer, and any Google Publisher Center-facing metadata
- * must read from here rather than hardcoding the name/logo — Publisher
- * Center requires this identity to be consistent sitewide.
+ * Defines basic security restrictions for the Publisher class
+ * to prevent abuse by injecting malicious files into a project.
  */
-class Publisher extends BaseConfig
+class Publisher extends BasePublisher
 {
-    public string $name = 'Your News Site';
-
-    public string $legalName = 'Your Publishing Company LLC';
-
-    public string $url = 'https://www.example-news-site.com/';
-
-    public string $logoUrl = 'https://www.example-news-site.com/assets/logo-600x60.png';
-
-    public int $logoWidth = 600;
-
-    public int $logoHeight = 60;
-
-    public string $contactEmail = 'editors@example-news-site.com';
-
     /**
-     * BCP-47 language code, used in NewsArticle JSON-LD and the
-     * <news:language> element of news-sitemap.xml.
-     */
-    public string $newsLanguage = 'en';
-
-    /**
-     * Social profile URLs surfaced via sameAs on the Organization node —
-     * an E-E-A-T signal. Fill in once real profiles exist.
+     * A list of allowed destinations with a (pseudo-)regex
+     * of allowed files for each destination.
+     * Attempts to publish to directories not in this list will
+     * result in a PublisherException. Files that do no fit the
+     * pattern will cause copy/merge to fail.
      *
-     * @var array<int, string>
+     * @var array<string, string>
      */
-    public array $sameAs = [];
-
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->name         = env('publisher.name', $this->name);
-        $this->legalName    = env('publisher.legalName', $this->legalName);
-        $this->url           = env('publisher.url', $this->url);
-        $this->logoUrl       = env('publisher.logoUrl', $this->logoUrl);
-        $this->logoWidth     = (int) env('publisher.logoWidth', $this->logoWidth);
-        $this->logoHeight    = (int) env('publisher.logoHeight', $this->logoHeight);
-        $this->contactEmail  = env('publisher.contactEmail', $this->contactEmail);
-        $this->newsLanguage  = env('publisher.newsLanguage', $this->newsLanguage);
-    }
+    public $restrictions = [
+        ROOTPATH => '*',
+        FCPATH   => '#\.(s?css|js|map|html?|xml|json|webmanifest|ttf|eot|woff2?|gif|jpe?g|tiff?|png|webp|bmp|ico|svg)$#i',
+    ];
 }

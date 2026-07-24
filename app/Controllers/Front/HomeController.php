@@ -8,7 +8,7 @@ use App\Controllers\Front\Concerns\BatchesFeaturedMedia;
 use App\Models\ArticleModel;
 use App\Models\CategoryModel;
 use Config\Cache as CacheConfig;
-use Config\Publisher;
+use Config\SiteIdentity;
 
 class HomeController extends BaseController
 {
@@ -58,8 +58,8 @@ class HomeController extends BaseController
         $mediaMap        = $this->batchFeaturedMedia($latestArticles);
         $categorySlugMap = $this->batchCategorySlugs($latestArticles);
 
-        /** @var Publisher $publisher */
-        $publisher = config(Publisher::class);
+        /** @var SiteIdentity $publisher */
+        $publisher = config(SiteIdentity::class);
 
         return view('front/home', [
             'categoryTree'     => $categoryTree,

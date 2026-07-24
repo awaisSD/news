@@ -1,5 +1,5 @@
 <?php
-$publisher = config(\Config\Publisher::class);
+$publisher = config(\Config\SiteIdentity::class);
 
 // Kept in sync by hand with the $staticPages list in app/Config/Routes.php
 // and CategoryModel::RESERVED_SLUGS — these six slugs are the CMS-managed

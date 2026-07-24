@@ -6,7 +6,7 @@ use App\Entities\Article;
 use App\Entities\Category;
 use App\Entities\Media;
 use App\Entities\User;
-use Config\Publisher;
+use Config\SiteIdentity;
 
 /**
  * Pure, stateless schema.org JSON-LD array builders.
@@ -26,8 +26,8 @@ class JsonLdBuilder
      */
     public function forOrganization(): array
     {
-        /** @var Publisher $pub */
-        $pub = config(Publisher::class);
+        /** @var SiteIdentity $pub */
+        $pub = config(SiteIdentity::class);
 
         $data = [
             '@type'     => 'Organization',

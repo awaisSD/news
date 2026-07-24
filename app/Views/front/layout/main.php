@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="<?= esc(config(\Config\Publisher::class)->newsLanguage) ?>">
+<html lang="<?= esc(config(\Config\SiteIdentity::class)->newsLanguage) ?>">
 <head>
 <?= $this->include('front/layout/_head.php') ?>
 </head>

@@ -4,7 +4,7 @@ namespace App\Libraries\Seo;
 
 use App\Models\ArticleModel;
 use App\Models\CategoryModel;
-use Config\Publisher;
+use Config\SiteIdentity;
 use DateTimeImmutable;
 
 /**
@@ -37,8 +37,8 @@ class NewsSitemapBuilder
         $cutoff   = $now->modify('-48 hours');
         $articles = $this->articles->recentForNewsSitemap($cutoff, 1000);
 
-        /** @var Publisher $pub */
-        $pub = config(Publisher::class);
+        /** @var SiteIdentity $pub */
+        $pub = config(SiteIdentity::class);
 
         $categorySlugsById = $this->categorySlugsFor($articles);
 

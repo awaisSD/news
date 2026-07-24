@@ -5,7 +5,7 @@
  * is already cached for 3600s (see Config\Cache::$ttls['category_tree']), so
  * this costs nothing extra beyond a cache read on every request.
  */
-$publisher     = config(\Config\Publisher::class);
+$publisher     = config(\Config\SiteIdentity::class);
 $navCategories = model(\App\Models\CategoryModel::class)->getTree();
 ?>
 <header class="site-header">

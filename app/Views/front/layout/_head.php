@@ -8,7 +8,7 @@
  *      Article pages instead embed their NewsArticle/BreadcrumbList JSON-LD
  *      inline in the content region via front/article/_jsonld.php.
  */
-$publisher = config(\Config\Publisher::class);
+$publisher = config(\Config\SiteIdentity::class);
 $title     = $pageTitle ?? $publisher->name;
 ?>
 <meta charset="UTF-8">

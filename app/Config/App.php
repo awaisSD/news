@@ -8,7 +8,7 @@ class App extends BaseConfig
 {
     /**
      * Canonical site URL. Must exactly match the domain submitted to
-     * Google Publisher Center — see Config\Publisher for the identity
+     * Google Publisher Center — see Config\SiteIdentity for the identity
      * fields (name/logo) that must stay consistent with this URL.
      */
     public string $baseURL = '';

@@ -8,7 +8,7 @@
  *      FeedController::buildFeed() (see App\Entities\Article — extra
  *      selected columns become dynamic attributes via Entity::__set()).
  * @var string                $channelTitle
- * @var \Config\Publisher     $publisher
+ * @var \Config\SiteIdentity  $publisher
  */
 $buildDate = (new DateTimeImmutable())->format(DATE_RSS);
 ?>
