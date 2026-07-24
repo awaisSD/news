@@ -38,5 +38,5 @@ class App extends BaseConfig
 
     public string $permittedURIChars = 'a-z 0-9~%.:_\-';
 
-    public string $CSPEnabled = false;
+    public bool $CSPEnabled = false;
 }
