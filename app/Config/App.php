@@ -39,13 +39,34 @@ class App extends BaseConfig
     public string $charset = 'UTF-8';
 
     /**
-     * Force HTTPS site-wide — required for News/Search eligibility and
-     * enforced additionally at the Apache vhost level and by
-     * Filters\ForceHttpsFilter as defense in depth.
+     * Force HTTPS site-wide — required for News/Search eligibility.
+     *
+     * FALSE here on purpose when running behind an AWS ALB/CloudFront that
+     * terminates TLS: the ALB only ever forwards plain HTTP to this app, so
+     * CI4 can never see the original request as secure without proxyIPs
+     * trust configured (see below) — redirecting HTTPS->HTTPS in a loop is
+     * the classic symptom of leaving this true in that setup. Enforce the
+     * redirect at the ALB's HTTP:80 listener instead (a built-in "redirect
+     * to HTTPS" action, no app code involved). If this app is ever deployed
+     * WITHOUT a TLS-terminating proxy in front (plain Apache+mod_ssl on the
+     * box itself), set this back to true.
      */
-    public bool $forceGlobalSecureRequests = true;
+    public bool $forceGlobalSecureRequests = false;
 
-    public array $proxyIPs = [];
+    /**
+     * Trust X-Forwarded-For from the VPC's private IP ranges so
+     * $request->getIPAddress() and audit_log entries record the real
+     * visitor IP rather than the ALB's internal address. Narrow this to
+     * your actual VPC CIDR if you know it, rather than all three RFC1918
+     * ranges, once you've confirmed it.
+     *
+     * @var array<string, string>
+     */
+    public array $proxyIPs = [
+        '10.0.0.0/8'     => 'X-Forwarded-For',
+        '172.16.0.0/12'  => 'X-Forwarded-For',
+        '192.168.0.0/16' => 'X-Forwarded-For',
+    ];
 
     public string $permittedURIChars = 'a-z 0-9~%.:_\-';
 
