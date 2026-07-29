@@ -9,6 +9,7 @@ use App\Models\ArticleCorrectionModel;
 use App\Models\ArticleModel;
 use App\Models\CategoryModel;
 use App\Models\MediaModel;
+use App\Models\TagModel;
 use App\Models\UserModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use Config\Cache as CacheConfig;
@@ -60,6 +61,7 @@ class ArticleController extends BaseController
             : null;
 
         $corrections = model(ArticleCorrectionModel::class)->forArticle($article->id);
+        $tags        = model(TagModel::class)->forArticle($article->id);
 
         $jsonLdBuilder = new JsonLdBuilder();
 
@@ -93,6 +95,7 @@ class ArticleController extends BaseController
             'pageTitle'        => $article->meta_title ?: $article->headline,
             'metaDescription'  => $article->meta_description ?: $article->excerpt,
             'canonicalUrl'     => $article->canonical_url ?: site_url($categorySlug . '/' . $article->slug),
+            'metaKeywords'     => implode(', ', array_map(static fn ($tag) => $tag->name, $tags)),
         ]);
     }
 }
