@@ -11,7 +11,7 @@ $navCategories = model(\App\Models\CategoryModel::class)->getTree();
 <header class="site-header">
     <div class="site-header__bar">
         <a class="site-header__brand" href="<?= esc(site_url(), 'attr') ?>">
-            <img src="<?= esc(base_url('assets/tech-acts-transparent.png'), 'attr') ?>" alt="<?= esc($publisher->name) ?>" height="88" width="88" style="height:88px;width:auto;vertical-align:middle;">
+            <img src="<?= esc(base_url('assets/tech-acts-logo-cropped.png'), 'attr') ?>" alt="<?= esc($publisher->name) ?>" style="height:64px;width:auto;vertical-align:middle;">
         </a>
 
         <form class="site-header__search" action="<?= esc(site_url('search'), 'attr') ?>" method="get" role="search">

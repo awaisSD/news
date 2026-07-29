@@ -47,7 +47,7 @@ $navSections = [
 ?>
 <aside class="admin-sidebar">
     <div class="brand">
-        <img src="<?= esc(base_url('assets/tech-acts-transparent.png'), 'attr') ?>" alt="Tech Acts" height="56" width="56" style="height:56px;width:auto;vertical-align:middle;margin-right:8px;">
+        <img src="<?= esc(base_url('assets/tech-acts-logo-cropped.png'), 'attr') ?>" alt="Tech Acts" style="height:40px;width:auto;vertical-align:middle;margin-right:8px;">
         Admin
     </div>
     <nav>
