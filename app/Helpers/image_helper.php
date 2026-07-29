@@ -14,24 +14,28 @@ if (! function_exists('media_url')) {
      * Resolves a display URL for a Media entity, falling back to a static
      * placeholder when no media is available.
      *
-     * @param int $width Desired display width. Only used to build a `?w=`
-     *                    query hint when the media has a `cdn_url` — the
-     *                    exact query param name a real CDN honors depends
-     *                    on which CDN is provisioned (e.g. Bunny/Cloudflare
-     *                    use `width`/`w` differently); adjust this to match
-     *                    once a CDN is chosen.
+     * Base URL resolution is delegated to Media::getUrl() (cdn_url column,
+     * else Config\Media::$cdnBaseUrl, else a local /uploads/ URL) — this
+     * function used to check $media->cdn_url directly and fall back to the
+     * bare relative filename, which skipped $cdnBaseUrl entirely and wasn't
+     * a usable URL on its own. The `?w=` resize hint is only appended when
+     * an actual CDN is in play; a plain local static file has no resizing
+     * capability to hint at.
+     *
+     * @param int $width Desired display width — the exact query param name
+     *                    a real CDN honors depends on which CDN is
+     *                    provisioned (e.g. Bunny/Cloudflare use `width`/`w`
+     *                    differently); adjust this to match once chosen.
      */
     function media_url(?Media $media, int $width = 800): string
     {
         if ($media === null) {
-            return '/assets/placeholder-1200x630.png';
+            return base_url('assets/placeholder-1200x630.png');
         }
 
-        if (! empty($media->cdn_url)) {
-            return $media->cdn_url . '?w=' . $width;
-        }
+        $url = $media->getUrl();
 
-        return (string) $media->path;
+        return mediaHasCdn($media) ? $url . '?w=' . $width : $url;
     }
 }
 
@@ -39,14 +43,17 @@ if (! function_exists('media_srcset')) {
     /**
      * Builds a `srcset` attribute value from Config\Media::$variantWidths,
      * e.g. "https://cdn.example.com/x.jpg?w=400 400w, ...?w=800 800w, ...".
+     * Empty when no CDN is configured — a local static file can't be
+     * resized on request, so there's nothing meaningful to offer beyond
+     * the single media_url() src.
      */
     function media_srcset(?Media $media): string
     {
-        if ($media === null) {
+        if ($media === null || ! mediaHasCdn($media)) {
             return '';
         }
 
-        $base = ! empty($media->cdn_url) ? $media->cdn_url : (string) $media->path;
+        $base = $media->getUrl();
 
         /** @var MediaConfig $config */
         $config = config(MediaConfig::class);
@@ -58,6 +65,22 @@ if (! function_exists('media_srcset')) {
         }
 
         return implode(', ', $parts);
+    }
+}
+
+if (! function_exists('mediaHasCdn')) {
+    /**
+     * Whether this media item resolves through an actual CDN (per-row
+     * cdn_url, or the sitewide Config\Media::$cdnBaseUrl) rather than the
+     * local /uploads/ fallback — used to decide whether resize query
+     * params are meaningful to append.
+     */
+    function mediaHasCdn(Media $media): bool
+    {
+        /** @var MediaConfig $config */
+        $config = config(MediaConfig::class);
+
+        return ! empty($media->cdn_url) || ! empty($config->cdnBaseUrl);
     }
 }
 
