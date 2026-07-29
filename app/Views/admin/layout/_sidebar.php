@@ -47,7 +47,7 @@ $navSections = [
 ?>
 <aside class="admin-sidebar">
     <div class="brand">
-        <img src="<?= esc(base_url('assets/tech-acts-new-logo.png'), 'attr') ?>" alt="Tech Acts Admin" style="height:56px;width:auto;vertical-align:middle;">
+        <img src="<?= esc(base_url('assets/tech-acts-new-logo-trimmed.png'), 'attr') ?>" alt="Tech Acts Admin" style="height:72px;width:auto;vertical-align:middle;">
     </div>
     <nav>
         <?php foreach ($navSections as $section): ?>
