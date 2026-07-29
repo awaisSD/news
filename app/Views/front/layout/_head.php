@@ -18,6 +18,8 @@ $title     = $pageTitle ?? $publisher->name;
 <link rel="canonical" href="<?= esc($canonicalUrl ?? current_url(), 'attr') ?>">
 <link rel="alternate" type="application/rss+xml" title="<?= esc($publisher->name) ?> — Latest" href="<?= esc(site_url('feed'), 'attr') ?>">
 <link rel="stylesheet" href="<?= esc(base_url('assets/site.css'), 'attr') ?>">
+<link rel="icon" type="image/png" href="<?= esc(base_url('assets/tech-acts-transparent.png'), 'attr') ?>">
+<link rel="apple-touch-icon" href="<?= esc(base_url('assets/tech-acts-news.png'), 'attr') ?>">
 <?php if (! empty($jsonLd)): ?>
     <?php foreach ($jsonLd as $block): ?>
 <?= $block ?>
