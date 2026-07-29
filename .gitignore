@@ -25,6 +25,15 @@ composer.lock
 !/writable/uploads/.gitkeep
 
 # ---------------------------
+# Publicly-served uploads (Config\Media::$uploadPath) — actual uploaded/
+# AI-generated images aren't source-controlled, only the directory itself
+# ---------------------------
+/public/uploads/*
+!/public/uploads/index.html
+!/public/uploads/.gitkeep
+!/public/uploads/ai/
+
+# ---------------------------
 # OS / editor cruft
 # ---------------------------
 .DS_Store

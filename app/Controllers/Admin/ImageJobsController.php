@@ -111,11 +111,18 @@ class ImageJobsController extends BaseController
 
         $altText = (new AltTextService())->generate($job, $article);
 
+        // media.path is stored relative to Config\Media::$uploadPath (same
+        // convention as manual uploads in MediaController::create()) — not
+        // the absolute filesystem path in $job->generated_path — since
+        // Media::getUrl() builds a URL by appending this to base_url('uploads/').
+        $mediaConfig    = config(\Config\Media::class);
+        $relativePath   = ltrim(str_replace(rtrim($mediaConfig->uploadPath, '/'), '', $job->generated_path), '/');
+
         $mediaModel = model(MediaModel::class);
         $mediaId    = $mediaModel->insert([
             'uuid'            => generate_uuid4(),
             'disk'            => 'local',
-            'path'            => $job->generated_path,
+            'path'            => $relativePath,
             'width'           => $job->width,
             'height'          => $job->height,
             'mime_type'       => 'image/png',

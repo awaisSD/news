@@ -37,9 +37,9 @@ class Media extends Entity
     ];
 
     /**
-     * Returns cdn_url when set; otherwise falls back to a locally-served
-     * path built from the configured Media::$cdnBaseUrl. If no CDN base
-     * URL is configured either, returns the raw storage path as-is.
+     * Returns cdn_url when set; otherwise a CDN-based URL if Media::$cdnBaseUrl
+     * is configured; otherwise a plain local URL under /uploads/, which Apache
+     * serves directly since Media::$uploadPath now lives inside public/.
      */
     public function getUrl(): string
     {
@@ -51,10 +51,10 @@ class Media extends Entity
         $config = config(MediaConfig::class);
         $path   = $this->attributes['path'] ?? '';
 
-        if (empty($config->cdnBaseUrl)) {
-            return $path;
+        if (! empty($config->cdnBaseUrl)) {
+            return rtrim($config->cdnBaseUrl, '/') . '/' . ltrim($path, '/');
         }
 
-        return rtrim($config->cdnBaseUrl, '/') . '/' . ltrim($path, '/');
+        return base_url('uploads/' . ltrim($path, '/'));
     }
 }
