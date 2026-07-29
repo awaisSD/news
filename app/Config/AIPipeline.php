@@ -5,14 +5,17 @@ namespace Config;
 use CodeIgniter\Config\BaseConfig;
 
 /**
- * AI provider selection and non-secret pipeline tuning.
+ * AI provider selection and pipeline tuning — the deploy-time / fallback
+ * defaults, read from .env.
  *
- * Consumed exclusively through Services::aiProvider()/Services::imageProvider()
- * (see Config\Services) — provider classes never read env()/getenv() directly,
- * so adding/swapping a provider is a config change here, not a code change at
- * call sites. Secrets live only in .env / host environment variables, never
- * in the ai_settings database table (that table holds non-secret,
- * admin-editable knobs such as the daily generation cap and default model).
+ * Provider classes never read env()/getenv() directly; they're always
+ * constructed via Services::aiProvider()/Services::imageProvider(), which
+ * layer admin-configured overrides from the ai_settings table (editable at
+ * /admin/settings/ai — provider/model choice, the daily generation cap,
+ * request timeout, and encrypted API keys) on top of these .env values.
+ * See Config\Services::resolveEffectivePipelineConfig() for the precedence
+ * (DB override if set, else this class's .env-driven default) and
+ * App\Models\AiSettingModel for how API keys get encrypted at rest.
  */
 class AIPipeline extends BaseConfig
 {

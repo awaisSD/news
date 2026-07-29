@@ -17,10 +17,15 @@ auto-publish path anywhere in the codebase. See
 ```bash
 composer install
 cp .env.example .env
-# edit .env: database credentials, publisher identity, AI provider API keys
+# edit .env: database credentials, publisher identity
+php spark key:generate
 php spark migrate
 php spark db:seed DatabaseSeeder
 ```
+
+`php spark key:generate` sets `encryption.key` in `.env` — required before
+storing any AI provider API key via `/admin/settings/ai` (see below), since
+keys are encrypted before being written to the database.
 
 Point your Apache vhost's document root at `public/`. Everything outside
 `public/` (app/, vendor/, writable/) should not be web-accessible.
@@ -40,7 +45,12 @@ logged anywhere except as the bcrypt hash in the database. Re-running it is
 safe: it checks for an existing user by email first and won't create a
 duplicate.
 
-Then log in at `/admin/login`.
+Then log in at `/admin/login`. From there, `/admin/settings/ai` (admin role
+only) covers the full AI pipeline: text/image provider choice, model names,
+API keys, the daily generation cap, and request timeout — every field
+overrides its `.env` default the moment you save it. API keys are encrypted
+with `Config\Encryption` before being stored and are never redisplayed once
+set; leaving a key field blank on save keeps the existing key unchanged.
 
 ## Required cron jobs (production)
 
@@ -63,8 +73,9 @@ discovery depends on that file reflecting the last 48 hours in near-real-time.
   both expect these to reflect a real, transparent publisher.
 - **`.env` publisher.* values** — name/logo/URL must exactly match what you
   register in Google Publisher Center.
-- **`.env` ai.* API keys** — all placeholders. Text/image provider selection
-  and models are config-driven (`Config\AIPipeline`), not hardcoded.
+- **AI provider API keys** — set these via `/admin/settings/ai` (recommended,
+  encrypted at rest) or `.env` `ai.*` values as a fallback default. Either
+  way, nothing works until real keys replace the placeholders.
 - **AI provider request/response shapes** — `app/Libraries/AI/Providers/*`
   were written against each vendor's documented API shape as of this build,
   but were not tested against live endpoints (no local PHP/network access
