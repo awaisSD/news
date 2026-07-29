@@ -10,8 +10,9 @@ $navCategories = model(\App\Models\CategoryModel::class)->getTree();
 ?>
 <header class="site-header">
     <div class="site-header__bar">
-        <a class="site-header__brand" href="<?= esc(site_url(), 'attr') ?>">
-            <img src="<?= esc(base_url('assets/tech-acts-logo-cropped.png'), 'attr') ?>" alt="<?= esc($publisher->name) ?>" style="height:64px;width:auto;vertical-align:middle;">
+        <a class="site-header__brand" href="<?= esc(site_url(), 'attr') ?>" style="display:inline-flex;align-items:center;gap:0.5rem;">
+            <img src="<?= esc(base_url('assets/tech-acts-icon.png'), 'attr') ?>" alt="" style="height:40px;width:auto;">
+            <span><?= esc($publisher->name) ?></span>
         </a>
 
         <form class="site-header__search" action="<?= esc(site_url('search'), 'attr') ?>" method="get" role="search">
